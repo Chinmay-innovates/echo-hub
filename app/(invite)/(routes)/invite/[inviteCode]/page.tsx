@@ -17,7 +17,7 @@ export default async function InvitePage({ params }: Props) {
 
   const existingServer = await db.server.findFirst({
     where: {
-      inviteCode: inviteCode,
+      inviteCode,
       members: {
         some: {
           profileId: profile.id,
