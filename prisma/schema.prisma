@@ -54,7 +54,7 @@ model Server {
 
   name       String
   imageUrl   String @db.Text
-  inviteCode String @db.Text
+  inviteCode String @unique
 
   @@index([profileId])
 }
