@@ -4,3 +4,8 @@ export type Profile = Prisma.Profile;
 export type Member = Prisma.Member;
 export type Server = Prisma.Server;
 export type Channel = Prisma.Channel;
+export type ServerWithMembersWithProfiles = Server & {
+  members: (Member & {
+    profile: Profile;
+  })[];
+};
