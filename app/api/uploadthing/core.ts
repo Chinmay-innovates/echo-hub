@@ -10,7 +10,17 @@ const requireAuth = async () => {
   return { userId };
 };
 
-const handleUploadComplete = async ({ metadata, file }: any) => {
+const handleUploadComplete = async ({
+  metadata,
+  file,
+}: {
+  metadata: {
+    userId: string;
+  };
+  file: {
+    ufsUrl: string;
+  };
+}) => {
   console.log(`Upload complete for userId: ${metadata.userId}`);
   console.log('File URL:', file.ufsUrl);
   return {
@@ -30,9 +40,7 @@ export const ourFileRouter = {
 
   messageFile: f(['image', 'pdf'])
     .middleware(() => requireAuth())
-    .onUploadComplete((res) => {
-      console.log('Upload complete', res);
-    }),
+    .onUploadComplete(handleUploadComplete),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
