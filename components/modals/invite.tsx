@@ -39,18 +39,8 @@ export const InviteModal = () => {
         setIsCopied(false);
       }, 2000);
     } catch (error) {
-      console.error('Failed to copy to clipboard:', error);
-      // Fallback for browsers that don't support clipboard API
-      const textArea = document.createElement('textarea');
-      textArea.value = inviteUrl;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      setIsCopied(true);
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 2000);
+      console.error('Clipboard copy failed:', error);
+      alert('Your browser does not support copying to clipboard.');
     }
   };
 
