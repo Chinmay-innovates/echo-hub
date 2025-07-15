@@ -14,19 +14,19 @@ import {
 import { Button } from '@/components/ui/button';
 
 import { useModal } from '@/hooks/use-modal-store';
-import { AlertTriangle, LogOut, X } from 'lucide-react';
+import { AlertTriangle, Trash, Trash2, X } from 'lucide-react';
 
-export const LeaveServerModal = () => {
+export const DeleteServerModal = () => {
   const { isOpen, onClose, type, data } = useModal();
 
-  const isModalOpen = isOpen && type === 'leaveServer';
+  const isModalOpen = isOpen && type === 'deleteServer';
   const { server } = data;
 
   const [isLoading, setIsloading] = useState(false);
   const onClick = async () => {
     try {
       setIsloading(true);
-      axios.patch(`/api/servers/${server?.id}/leave`);
+      axios.delete(`/api/servers/${server?.id}`);
       onClose();
     } catch (error) {
       console.log(error);
@@ -46,7 +46,7 @@ export const LeaveServerModal = () => {
           <div className="flex items-center justify-center mb-4">
             <div className="relative">
               <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
-                <LogOut className="w-8 h-8 text-white" />
+                <Trash className="w-8 h-8 text-white" />
               </div>
               <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-red-400 to-orange-400 rounded-full flex items-center justify-center shadow-md">
                 <AlertTriangle className="w-3 h-3 text-white" />
@@ -55,15 +55,16 @@ export const LeaveServerModal = () => {
           </div>
 
           <DialogTitle className="text-2xl text-center font-bold bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">
-            Leave Server
+            Delete Server
           </DialogTitle>
 
           <DialogDescription className="text-center text-slate-600 mt-4 leading-relaxed">
-            Are u sure u want to leave{' '}
+            Are u sure u want to do this?
+            <br />
             <span className="font-semibold text-sm text-indigo-500">
               {server?.name}
             </span>{' '}
-            ?
+            will be permanently deleted.
           </DialogDescription>
 
           <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
@@ -71,9 +72,6 @@ export const LeaveServerModal = () => {
               <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
               <div className="text-sm text-amber-800">
                 <p className="font-medium mb-1">This action cannot be undone</p>
-                <p className="text-amber-700">
-                  You'll need a new invite link to rejoin this server.
-                </p>
               </div>
             </div>
           </div>
@@ -100,12 +98,12 @@ export const LeaveServerModal = () => {
               {isLoading ? (
                 <div className="flex items-center">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                  Leaving...
+                  Deleting...
                 </div>
               ) : (
                 <div className="flex items-center">
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Leave Server
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Server
                 </div>
               )}
             </Button>
