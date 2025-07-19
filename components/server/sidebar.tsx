@@ -9,6 +9,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 
 import { ServerHeader } from '@/components/server/header';
+import { ServerSearch } from '@/components/server/search';
+import { ServerSection } from '@/components/server/section';
+import { ServerChannel } from '@/components/server/channel';
+import { ServerMember } from '@/components/server/member';
 
 import { currentProfile } from '@/lib/current-profile';
 
@@ -77,7 +81,7 @@ export const ServerSidebar = async ({ serverId }: Props) => {
   return (
     <div className="flex flex-col text-primary size-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
       <ServerHeader server={server} role={role} />
-      {/* <ScrollArea className="flex-1 px-3">
+      <ScrollArea className="flex-1 px-3">
         <div className="mt-2">
           <ServerSearch
             data={[
@@ -196,7 +200,7 @@ export const ServerSidebar = async ({ serverId }: Props) => {
             </div>
           </div>
         )}
-      </ScrollArea> */}
+      </ScrollArea>
     </div>
   );
 };
