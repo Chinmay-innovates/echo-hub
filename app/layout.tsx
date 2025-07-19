@@ -1,14 +1,16 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Open_Sans } from 'next/font/google';
+import { Rubik } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
 
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { ModalProvider } from '@/components/providers/modal-provider';
 
-const font = Open_Sans({
+export const font = Rubik({
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
