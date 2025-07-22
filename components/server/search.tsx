@@ -12,6 +12,8 @@ import {
   CommandGroup,
   CommandItem,
 } from '@/components/ui/command';
+import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 
 type Props = {
   data: {
@@ -29,8 +31,10 @@ type Props = {
 
 export const ServerSearch = ({ data }: Props) => {
   const [open, setOpen] = useState(false);
+
   const router = useRouter();
   const params = useParams();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -63,7 +67,10 @@ export const ServerSearch = ({ data }: Props) => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mt-2"
+        className={cn(
+          'group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mt-2',
+          isMobile && 'w-[250px]'
+        )}
       >
         <Search className="size-4 text-zinc-500 dark:text-zinc-400" />
         <p className="font-semibold text-sm group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300 transition">

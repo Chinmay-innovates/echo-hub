@@ -5,6 +5,12 @@ import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/db';
 import { ServerSidebar } from '@/components/server/sidebar';
 
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from '@/components/ui/resizable';
+
 const ServerLayout = async ({
   children,
   params,
@@ -33,12 +39,20 @@ const ServerLayout = async ({
   if (!server) return redirect('/');
 
   return (
-    <div className="h-full ">
-      <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
+    <ResizablePanelGroup direction="horizontal" className="size-full">
+      <ResizablePanel
+        minSize={10}
+        maxSize={30}
+        defaultSize={20}
+        className="hidden md:flex flex-col z-20"
+      >
         <ServerSidebar serverId={serverId} />
-      </div>
-      <main className="h-full md:pl-60">{children}</main>
-    </div>
+      </ResizablePanel>
+      <ResizableHandle withHandle className="hover:bg-gray-200/50" />
+      <ResizablePanel defaultSize={80} className="h-full">
+        <main className="size-full">{children}</main>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 };
 

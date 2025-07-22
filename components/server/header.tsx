@@ -22,6 +22,7 @@ import { MemberRole } from '@/app/generated/prisma';
 import { ServerWithMembersWithProfiles } from '@/prisma/types';
 import { useModal } from '@/hooks/use-modal-store';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
@@ -34,19 +35,22 @@ export const ServerHeader = ({ server, role }: ServerHeaderProps) => {
 
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
+  const isMobile = useIsMobile();
 
   return (
     <DropdownMenu onOpenChange={setOpen}>
       <DropdownMenuTrigger className="focus:outline-none" asChild>
-        <button className="w-full text-black dark:text-white font-semibold px-3 flex items-center h-12 border-neutral-200 dark:bg-neutral-800 border-b-2 hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition">
-          {server.name}
-          <ChevronDown
-            className={cn(
-              'size-5 ml-auto transition-transform',
-              open && 'rotate-180'
-            )}
-          />
-        </button>
+        {!isMobile && (
+          <button className="w-full text-black dark:text-white font-semibold px-3 flex items-center h-12 border-neutral-200 dark:bg-neutral-800 border-b-2 hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition">
+            {server.name}
+            <ChevronDown
+              className={cn(
+                'size-5 ml-auto transition-transform',
+                open && 'rotate-180'
+              )}
+            />
+          </button>
+        )}
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="w-56 text-sm font-medium text-black dark:text-neutral-300 space-y-[2px]">

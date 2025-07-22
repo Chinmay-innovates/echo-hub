@@ -13,10 +13,6 @@ import {
   Check,
   Gavel,
   Loader2,
-  Users,
-  Settings,
-  Crown,
-  UserMinus,
 } from 'lucide-react';
 import {
   Dialog,
@@ -107,7 +103,7 @@ export const ManageMembersModal = () => {
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             Manage Members
-            <DialogDescription className="text-center text-zinc-500 ">
+            <DialogDescription className="text-center text-zinc-500">
               {length} Member{length > 1 && 's'}
             </DialogDescription>
           </DialogTitle>
