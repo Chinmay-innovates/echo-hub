@@ -2,7 +2,14 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { AlertCircle, CheckCircle, FileIcon, Upload, X } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle,
+  File,
+  FileIcon,
+  Upload,
+  X,
+} from 'lucide-react';
 
 import { UploadButton } from '@/lib/uploadthing';
 import { cn } from '@/lib/utils';
@@ -17,18 +24,35 @@ export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
   const [fileSelected, setFileSelected] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [mimeType, setMimeType] = useState<string | null>(null);
 
   const fileType = value.split('.').pop()?.toLowerCase();
-  const fileName = value.split('/').pop() || 'Uploaded file';
+  const fileName = value.split('/').pop();
+  const isPdf =
+    mimeType?.startsWith('application/pdf') || value.endsWith('.pdf');
 
   React.useEffect(() => {
     if (value) {
       setFileSelected(true);
       setUploadError(null);
+      detectMimeType(value).then(setMimeType);
     }
   }, [value]);
 
-  if (value && fileType !== 'pdf') {
+  console.log({ value, mimeType, fileType, isPdf });
+
+  const detectMimeType = async (url: string): Promise<string | null> => {
+    try {
+      const res = await fetch(url, { method: 'HEAD' });
+      return res.headers.get('content-type');
+    } catch (err) {
+      console.error('Failed to detect MIME type', err);
+      return null;
+    }
+  };
+
+  // IMAGE UPLOAD PREVIEW
+  if (value && !isPdf) {
     return (
       <div className="relative group">
         <div className="relative size-24 rounded-xl overflow-hidden border-2 border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -58,29 +82,21 @@ export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
     );
   }
 
-  if (value && fileType === 'pdf') {
+  // PDF UPLOAD PREVIEW
+  if (value && isPdf) {
     return (
-      <div className="relative group">
-        <div className="flex items-center p-4 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 hover:shadow-md transition-all duration-300">
-          <div className="flex-shrink-0 p-2 bg-indigo-100 rounded-lg">
-            <FileIcon className="size-8 fill-indigo-200 stroke-indigo-600" />
-          </div>
-          <div className="ml-3 flex-1 min-w-0">
-            <a
-              href={value}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium text-indigo-700 hover:text-indigo-800 hover:underline truncate block"
-            >
-              {fileName}
-            </a>
-            <p className="text-xs text-indigo-500 mt-1">PDF Document</p>
-          </div>
-          <div className="ml-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-            <CheckCircle className="size-3 inline mr-1" />
-            Ready
-          </div>
+      <div className="relative flex items-center p-4 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 hover:shadow-md transition-all duration-300">
+        <div className="flex-shrink-0 p-2 bg-indigo-100 rounded-lg">
+          <FileIcon className="size-8 fill-indigo-200 stroke-indigo-600" />
         </div>
+        <a
+          href={value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm font-medium text-indigo-700 hover:text-indigo-800 hover:underline truncate block"
+        >
+          {fileName}
+        </a>
         <button
           onClick={() => {
             onChange('');
@@ -100,7 +116,9 @@ export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
       <UploadButton
         endpoint={endpoint}
         onClientUploadComplete={(res) => {
+          const mime = res?.[0].type;
           onChange(res?.[0].ufsUrl);
+          setMimeType(mime);
           setFileSelected(true);
           setIsUploading(false);
           setUploadError(null);

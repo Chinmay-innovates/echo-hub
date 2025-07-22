@@ -1,8 +1,11 @@
-import { ChatHeader } from '@/components/chat/header';
-import { currentProfile } from '@/lib/current-profile';
-import { db } from '@/lib/db';
-import { RedirectToSignIn } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
+import { RedirectToSignIn } from '@clerk/nextjs';
+
+import { ChatHeader } from '@/components/chat/header';
+import { ChatInput } from '@/components/chat/input';
+import { currentProfile } from '@/lib/current-profile';
+
+import { db } from '@/lib/db';
 
 type Props = {
   params: Promise<{
@@ -39,6 +42,16 @@ const ChannelPage = async ({ params }: Props) => {
         name={channel.name}
         serverId={channel.serverId}
         type="channel"
+      />
+      <div className="flex-1">{channelId}</div>
+      <ChatInput
+        name={channel.name}
+        type="channel"
+        apiUrl="/api/socket/messages"
+        query={{
+          channelId: channel.id,
+          serverId: channel.serverId,
+        }}
       />
     </div>
   );
