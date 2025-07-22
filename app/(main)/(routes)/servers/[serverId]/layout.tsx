@@ -41,7 +41,7 @@ const ServerLayout = async ({
   return (
     <ResizablePanelGroup direction="horizontal" className="size-full">
       <ResizablePanel
-        minSize={10}
+        minSize={15}
         maxSize={30}
         defaultSize={20}
         className="hidden md:flex flex-col z-20"
