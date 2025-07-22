@@ -72,7 +72,7 @@ export const LeaveServerModal = () => {
               <div className="text-sm text-amber-800">
                 <p className="font-medium mb-1">This action cannot be undone</p>
                 <p className="text-amber-700">
-                  You'll need a new invite link to rejoin this server.
+                  You&apos;ll need a new invite link to rejoin this server.
                 </p>
               </div>
             </div>
