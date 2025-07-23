@@ -1,0 +1,254 @@
+'use client';
+
+import z from 'zod';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import {
+  EditIcon,
+  FileIcon,
+  ShieldAlert,
+  ShieldCheck,
+  Trash,
+} from 'lucide-react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { MemberRole } from '@/app/generated/prisma';
+import { Member, MemberWithProfile } from '@/prisma/types';
+
+import { FormControl, FormField, FormItem } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+import { ActionTooltip } from '@/components/action-tooltip';
+import { UserAvatar } from '@/components/user-avatar';
+
+import { useModal } from '@/hooks/use-modal-store';
+import { cn } from '@/lib/utils';
+import queryString from 'query-string';
+
+type Props = {
+  id: string;
+  content: string;
+  member: MemberWithProfile;
+  timestamp: string;
+  fileUrl: string | null;
+  deleted: boolean;
+  currentMember: Member | undefined;
+  isUpdated: boolean;
+  socketUrl: string;
+  socketQuery: Record<string, string>;
+};
+
+const roleIconMap = {
+  [MemberRole.GUEST]: null,
+  [MemberRole.MODERATOR]: (
+    <ShieldCheck className="size-4 ml-2 text-indigo-500" />
+  ),
+  [MemberRole.ADMIN]: <ShieldAlert className="size-4 ml-2 text-rose-500" />,
+};
+
+const formSchema = z.object({
+  content: z.string().min(1),
+});
+
+export const ChatItem = ({
+  content,
+  currentMember,
+  deleted,
+  fileUrl,
+  id,
+  isUpdated,
+  member,
+  socketUrl,
+  timestamp,
+  socketQuery,
+}: Props) => {
+  const { onOpen } = useModal();
+  const [mimeType, setMimeType] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      content,
+    },
+  });
+
+  const isAdmin = currentMember?.role === MemberRole.ADMIN;
+  const isModerator = currentMember?.role === MemberRole.MODERATOR;
+  const isOwner = currentMember?.id === member?.id;
+
+  const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
+  const canEditMessage = !deleted && !fileUrl && isOwner;
+  const isPDF = mimeType?.startsWith('application/pdf');
+  const isImage = !isPDF && fileUrl;
+  const isLoading = form.formState.isSubmitting;
+
+  useEffect(() => {
+    if (fileUrl) {
+      detectMimeType(fileUrl).then(setMimeType);
+    }
+  }, [fileUrl]);
+
+  useEffect(() => {
+    form.reset({ content });
+  }, [content]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsEditing(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const detectMimeType = async (url: string): Promise<string | null> => {
+    try {
+      const res = await fetch(
+        `/api/detect-mime?url=${encodeURIComponent(url)}`
+      );
+      const data = await res.json();
+
+      return data.mimeType ?? null;
+    } catch (err) {
+      console.error('Failed to detect MIME type', err);
+      return null;
+    }
+  };
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    try {
+      const url = queryString.stringifyUrl({
+        url: `${socketUrl}/${id}`,
+        query: socketQuery,
+      });
+      setIsEditing(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
+      <div className="group flex gap-x-2 items-start w-full">
+        <div className="cursor-pointer hover:drop-shadow-md transition">
+          <UserAvatar src={member.profile.imageUrl} />
+        </div>
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-x-2">
+            <div className="flex items-center">
+              <p className="text-sm md:text-md font-semibold hover:underline cursor-pointer">
+                {member.profile.name}
+              </p>
+              <ActionTooltip label={member.role}>
+                {roleIconMap[member.role]}
+              </ActionTooltip>
+            </div>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              {timestamp}
+            </span>
+          </div>
+          {isImage && (
+            <a
+              href={fileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative aspect-square rounded-md overflow-hidden mt-2 border flex items-center bg-secondary size-48"
+            >
+              <Image
+                fill
+                src={fileUrl}
+                alt={fileUrl + 'image'}
+                className="object-cover"
+              />
+            </a>
+          )}
+          {fileUrl && isPDF && (
+            <div className="relative flex items-center p-2 mt-2  rounded-md transition-all bg-background/10">
+              <FileIcon className="size-10 fill-indigo-200 stroke-indigo-600" />
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-indigo-500 hover:text-indigo-400 hover:underline"
+              >
+                PDF {fileUrl.split('/').pop()}
+              </a>
+            </div>
+          )}
+
+          {!fileUrl && !isEditing && (
+            <p
+              className={cn(
+                'text-sm text-zinc-600 dark:text-zinc-300',
+                deleted &&
+                  'italic text-zinc-500  dark:text-zinc-400 text-xs mt-1 bg-background/10 p-3'
+              )}
+            >
+              {content}
+              {isUpdated && !deleted && (
+                <span className="text-[10px] mx-2">(edited)</span>
+              )}
+            </p>
+          )}
+          {!fileUrl && isEditing && (
+            <FormProvider {...form}>
+              <form
+                className="flex items-center w-full pt-2 gap-x-2"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <FormField
+                  name="content"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormControl>
+                        <div className="relative w-full">
+                          <Input
+                            disabled={isLoading}
+                            placeholder="Edited Message"
+                            {...field}
+                            className="p-2 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
+                          />
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <Button disabled={isLoading} size="sm" variant="primary">
+                  Save
+                </Button>
+              </form>
+              <span className="text-[10px] mt-1 text-zinc-400">
+                Press Escape to cancel and enter to save
+              </span>
+            </FormProvider>
+          )}
+        </div>
+      </div>
+
+      {canDeleteMessage && (
+        <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800">
+          {canEditMessage && (
+            <ActionTooltip label="Edit">
+              <EditIcon
+                onClick={() => setIsEditing(true)}
+                className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
+              />
+            </ActionTooltip>
+          )}
+
+          <ActionTooltip label="Delete">
+            <Trash
+              onClick={() => {}}
+              className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
+            />
+          </ActionTooltip>
+        </div>
+      )}
+    </div>
+  );
+};

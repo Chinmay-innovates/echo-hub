@@ -9,3 +9,10 @@ export type ServerWithMembersWithProfiles = Server & {
     profile: Profile;
   })[];
 };
+export type MessageWithMemberWithProfile = Prisma.Message & {
+  member: Member & {
+    profile: Profile;
+  };
+};
+
+export type MemberWithProfile = Prisma.Member & { profile: Profile };

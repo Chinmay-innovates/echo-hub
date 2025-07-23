@@ -43,8 +43,11 @@ export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
 
   const detectMimeType = async (url: string): Promise<string | null> => {
     try {
-      const res = await fetch(url, { method: 'HEAD' });
-      return res.headers.get('content-type');
+      const res = await fetch(
+        `/api/detect-mime?url=${encodeURIComponent(url)}`
+      );
+      const data = await res.json();
+      return data.mimeType ?? null;
     } catch (err) {
       console.error('Failed to detect MIME type', err);
       return null;
