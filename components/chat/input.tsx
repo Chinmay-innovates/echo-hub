@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useModal } from '@/hooks/use-modal-store';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { EmojiPicker } from '../emoji-picker';
 
 type Props = {
   apiUrl: string;
@@ -118,21 +119,11 @@ export const ChatInput = ({ apiUrl, name, query, type }: Props) => {
                     {/* Right Side Controls */}
                     <div className="flex items-center gap-2 mr-3">
                       {/* Emoji Picker */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          // Add emoji functionality here
-                          field.onChange(`${field.value} 😀`);
-                        }}
-                        disabled={isLoading}
-                        className="rounded-lg p-2
-                          text-gray-500 dark:text-gray-400
-                          hover:bg-gray-100 dark:hover:bg-zinc-700
-                          hover:text-gray-700 dark:hover:text-gray-300
-                          transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <Smile className="size-4" />
-                      </button>
+                      <EmojiPicker
+                        onChange={(emoji) =>
+                          field.onChange(`${field.value} ${emoji}`)
+                        }
+                      />
 
                       {/* Send Button */}
                       <button

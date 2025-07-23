@@ -6,6 +6,7 @@ import { ChatInput } from '@/components/chat/input';
 import { currentProfile } from '@/lib/current-profile';
 
 import { db } from '@/lib/db';
+import { ChatMessages } from '@/components/chat/messages';
 
 type Props = {
   params: Promise<{
@@ -43,7 +44,20 @@ const ChannelPage = async ({ params }: Props) => {
         serverId={channel.serverId}
         type="channel"
       />
-      <div className="flex-1">{channelId}</div>
+      <ChatMessages
+        member={member}
+        name={channel.name}
+        type="channel"
+        apiUrl="/api/messages"
+        socketUrl="/api/socket/messages"
+        socketQuery={{
+          channelId: channel.id,
+          serverId: channel.serverId,
+        }}
+        paramKey="channelId"
+        paramValue={channel.id}
+        chatId={channel.id}
+      />
       <ChatInput
         name={channel.name}
         type="channel"
