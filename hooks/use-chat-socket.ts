@@ -7,6 +7,7 @@ type ChatSocketProps = {
   addKey: string;
   updateKey: string;
   queryKey: string;
+  onMessage?: (message: MessageWithMemberWithProfile) => void;
 };
 
 type PaginatedMessages = {
@@ -17,6 +18,7 @@ export const useChatSocket = ({
   addKey,
   updateKey,
   queryKey,
+  onMessage,
 }: ChatSocketProps) => {
   const { socket } = useSocket();
   const queryClient = useQueryClient();
@@ -68,6 +70,11 @@ export const useChatSocket = ({
           };
         }
       );
+
+      // 🔥 Trigger optional external handler (e.g. for unread detection)
+      if (typeof onMessage === 'function') {
+        onMessage(message);
+      }
     };
 
     socket.on(addKey, handleAdd);
@@ -77,5 +84,5 @@ export const useChatSocket = ({
       socket.off(addKey, handleAdd);
       socket.off(updateKey, handleUpdate);
     };
-  }, [socket, queryClient, queryKey, addKey, updateKey]);
+  }, [socket, queryClient, queryKey, addKey, updateKey, onMessage]);
 };
