@@ -1,22 +1,20 @@
 'use client';
 
-import {
-  Member,
-  MemberWithProfile,
-  MessageWithMemberWithProfile,
-} from '@/prisma/types';
-import { Loader2, ServerCrash } from 'lucide-react';
 import { Fragment } from 'react';
-import { ChatWelcome } from './welcome';
-import { useChatQuery } from '@/hooks/use-chat-query';
-import { ChatItem } from './item';
+import { Loader2, ServerCrash } from 'lucide-react';
+
 import { format } from '@/lib/utils';
+import { useChatQuery } from '@/hooks/use-chat-query';
+import { Member, MessageWithMemberWithProfile } from '@/prisma/types';
+
+import { ChatItem } from './item';
+import { ChatWelcome } from './welcome';
 
 const DATE_FORMAT = 'dd MMM yyyy, HH:mm';
 
 type Props = {
   name: string;
-  member: MemberWithProfile;
+  member: Member;
   chatId: string;
   apiUrl: string;
   socketUrl: string;
