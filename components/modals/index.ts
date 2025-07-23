@@ -9,3 +9,4 @@ export { DeleteChannelModal } from './delete-channel';
 export { EditChannelModal } from './edit-channel';
 export { MessageFileModal } from './message-file';
 export { InitialModal } from './initial';
+export { DeleteMessageModal } from './delete-message';

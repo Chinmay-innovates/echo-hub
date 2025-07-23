@@ -9,6 +9,7 @@ import { Member, MessageWithMemberWithProfile } from '@/prisma/types';
 
 import { ChatItem } from './item';
 import { ChatWelcome } from './welcome';
+import { useChatSocket } from '@/hooks/use-chat-socket';
 
 const DATE_FORMAT = 'dd MMM yyyy, HH:mm';
 
@@ -36,10 +37,18 @@ export const ChatMessages = ({
   type,
 }: Props) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:messages`;
+  const updateKey = `chat:${chatId}:messages:update`;
+
   const { data, status } = useChatQuery({
     apiUrl,
     paramKey,
     paramValue,
+    queryKey,
+  });
+  const socket = useChatSocket({
+    addKey,
+    updateKey,
     queryKey,
   });
 
