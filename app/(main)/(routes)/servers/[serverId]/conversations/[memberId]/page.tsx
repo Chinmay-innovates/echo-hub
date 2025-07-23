@@ -1,12 +1,14 @@
-import { currentProfile } from '@/lib/current-profile';
-import { db } from '@/lib/db';
-import { RedirectToSignIn } from '@clerk/nextjs';
 import React from 'react';
+import { redirect } from 'next/navigation';
+import { RedirectToSignIn } from '@clerk/nextjs';
 
+import { db } from '@/lib/db';
+import { currentProfile } from '@/lib/current-profile';
 import { getOrCreateConversation } from '@/lib/conversation';
 
-import { redirect } from 'next/navigation';
 import { ChatHeader } from '@/components/chat/header';
+import { ChatMessages } from '@/components/chat/messages';
+import { ChatInput } from '@/components/chat/input';
 
 interface Props {
   params: Promise<{
@@ -53,7 +55,27 @@ const ConversationPage = async ({ params }: Props) => {
         serverId={serverId}
         type="conversation"
       />
-      Conversation content goes here...
+      <ChatMessages
+        member={currentMember}
+        name={otherMember.profile.name}
+        chatId={conversation.id}
+        type="conversation"
+        apiUrl="/api/direct-messages"
+        paramKey="conversationId"
+        paramValue={conversation.id}
+        socketUrl="/api/socket/direct-messages"
+        socketQuery={{
+          conversationId: conversation.id,
+        }}
+      />
+      <ChatInput
+        name={otherMember.profile.name}
+        type="conversation"
+        apiUrl="/api/socket/direct-messages"
+        query={{
+          conversationId: conversation.id,
+        }}
+      />
     </div>
   );
 };

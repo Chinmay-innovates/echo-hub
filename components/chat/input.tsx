@@ -1,6 +1,7 @@
 'use client';
 
 import z from 'zod';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -9,16 +10,16 @@ import queryString from 'query-string';
 import axios from 'axios';
 
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { EmojiPicker } from '@/components/emoji-picker';
 import { Input } from '@/components/ui/input';
 
 import { useModal } from '@/hooks/use-modal-store';
-import { useState } from 'react';
+import { QueryParams } from '@/types';
 import { cn } from '@/lib/utils';
-import { EmojiPicker } from '../emoji-picker';
 
 type Props = {
   apiUrl: string;
-  query: Record<string, any>;
+  query: QueryParams;
   name: string;
   type: 'conversation' | 'channel';
 };
