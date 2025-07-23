@@ -3,7 +3,6 @@
 import axios from 'axios';
 import { useState } from 'react';
 import queryString from 'query-string';
-import { useRouter } from 'next/navigation';
 import { AlertTriangle, Trash, Trash2, X } from 'lucide-react';
 
 import {
@@ -18,29 +17,24 @@ import { Button } from '@/components/ui/button';
 
 import { useModal } from '@/hooks/use-modal-store';
 
-export const DeleteChannelModal = () => {
+export const DeleteMessageModal = () => {
   const { isOpen, onClose, type, data } = useModal();
-  const router = useRouter();
 
-  const isModalOpen = isOpen && type === 'deleteChannel';
-  const { server, channel } = data;
+  const isModalOpen = isOpen && type === 'deleteMessage';
+  const { apiUrl, query } = data;
 
   const [isLoading, setIsloading] = useState(false);
   const onClick = async () => {
     try {
       setIsloading(true);
       const url = queryString.stringifyUrl({
-        url: `/api/channels/${channel?.id}`,
-        query: {
-          serverId: server?.id,
-        },
+        url: apiUrl || '',
+        query,
       });
 
       axios.delete(url);
 
       onClose();
-      router.refresh();
-      router.push(`/servers/${server?.id}`);
     } catch (error) {
       console.log(error);
     } finally {
@@ -68,16 +62,13 @@ export const DeleteChannelModal = () => {
           </div>
 
           <DialogTitle className="text-2xl text-center font-bold bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent">
-            Delete Channel
+            Delete Message
           </DialogTitle>
 
           <DialogDescription className="text-center text-slate-600 mt-4 leading-relaxed">
             Are u sure u want to do this?
             <br />
-            <span className="font-semibold text-sm text-indigo-500">
-              #{channel?.name}
-            </span>{' '}
-            will be permanently deleted.
+            The message will be permanently deleted.
           </DialogDescription>
 
           <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
@@ -116,7 +107,7 @@ export const DeleteChannelModal = () => {
               ) : (
                 <div className="flex items-center">
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Delete Channel
+                  Delete Message
                 </div>
               )}
             </Button>

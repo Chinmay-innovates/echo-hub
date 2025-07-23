@@ -4,7 +4,7 @@ import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { Paperclip, Plus, Send, Smile } from 'lucide-react';
+import { Paperclip, Send } from 'lucide-react';
 import queryString from 'query-string';
 import axios from 'axios';
 

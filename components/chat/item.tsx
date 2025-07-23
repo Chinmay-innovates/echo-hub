@@ -1,8 +1,12 @@
 'use client';
 
 import z from 'zod';
+import axios from 'axios';
 import Image from 'next/image';
+import queryString from 'query-string';
 import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+
 import {
   EditIcon,
   FileIcon,
@@ -25,7 +29,6 @@ import { UserAvatar } from '@/components/user-avatar';
 
 import { useModal } from '@/hooks/use-modal-store';
 import { cn } from '@/lib/utils';
-import queryString from 'query-string';
 
 type Props = {
   id: string;
@@ -67,7 +70,8 @@ export const ChatItem = ({
   const { onOpen } = useModal();
   const [mimeType, setMimeType] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
+  const params = useParams();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -96,14 +100,17 @@ export const ChatItem = ({
   }, [content]);
 
   useEffect(() => {
+    if (!isEditing) return;
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsEditing(false);
-      }
+      if (e.key === 'Escape') setIsEditing(false);
     };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isEditing]);
 
   const detectMimeType = async (url: string): Promise<string | null> => {
     try {
@@ -125,22 +132,36 @@ export const ChatItem = ({
         url: `${socketUrl}/${id}`,
         query: socketQuery,
       });
+      await axios.patch(url, data);
+      form.reset();
       setIsEditing(false);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const onMemberClick = () => {
+    if (member.id === currentMember?.id) return;
+
+    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+  };
+
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
-        <div className="cursor-pointer hover:drop-shadow-md transition">
+        <div
+          onClick={onMemberClick}
+          className="cursor-pointer hover:drop-shadow-md transition"
+        >
           <UserAvatar src={member.profile.imageUrl} />
         </div>
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2">
             <div className="flex items-center">
-              <p className="text-sm md:text-md font-semibold hover:underline cursor-pointer">
+              <p
+                onClick={onMemberClick}
+                className="text-sm md:text-md font-semibold hover:underline cursor-pointer"
+              >
                 {member.profile.name}
               </p>
               <ActionTooltip label={member.role}>
@@ -243,7 +264,12 @@ export const ChatItem = ({
 
           <ActionTooltip label="Delete">
             <Trash
-              onClick={() => {}}
+              onClick={() =>
+                onOpen('deleteMessage', {
+                  apiUrl: `${socketUrl}/${id}`,
+                  query: socketQuery,
+                })
+              }
               className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
             />
           </ActionTooltip>
