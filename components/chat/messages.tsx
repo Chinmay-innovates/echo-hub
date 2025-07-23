@@ -131,12 +131,12 @@ export const ChatMessages = ({
             className="group px-4 py-2 bg-gradient-to-r from-blue-500 to-fuchsia-500 text-white rounded-full hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-xl border border-white/20 backdrop-blur-sm"
             role="button"
             aria-label={`Scroll to latest ${unreadCount} unread message${
-              unreadCount > 1 && 's'
+              unreadCount > 1 ? 's' : ''
             }`}
           >
             <span className="flex items-center gap-2 text-xs font-medium">
               <ArrowDown className="w-3 h-3 group-hover:translate-y-0.5 transition-transform" />
-              {`New message${unreadCount > 1 && 's'} (${unreadCount})`}
+              {`New message${unreadCount > 1 ? 's' : ''} (${unreadCount})`}
               <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
             </span>
           </button>
