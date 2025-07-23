@@ -10,6 +10,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { EmojiMartEmoji } from '@/types';
 
 type Props = {
   onChange: (value: string) => void;
@@ -37,7 +38,7 @@ export const EmojiPicker = ({ onChange }: Props) => {
         <Picker
           data={data}
           theme={resolvedTheme}
-          onEmojiSelect={(emoji: any) => onChange(emoji.native)}
+          onEmojiSelect={(emoji: EmojiMartEmoji) => onChange(emoji.native)}
         />
       </PopoverContent>
     </Popover>

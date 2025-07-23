@@ -97,7 +97,7 @@ export const ChatItem = ({
 
   useEffect(() => {
     form.reset({ content });
-  }, [content]);
+  }, [content, form]);
 
   useEffect(() => {
     if (!isEditing) return;

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { Channel, Server } from '@/prisma/types';
 import { ChannelType } from '@/app/generated/prisma';
+import { QueryParams } from '@/types';
 
 export type ModalType =
   | 'createServer'
@@ -21,7 +22,7 @@ interface ModalData {
   channel?: Channel;
   channelType?: ChannelType;
   apiUrl?: string;
-  query?: Record<string, any>;
+  query?: QueryParams;
 }
 
 interface ModalStore {

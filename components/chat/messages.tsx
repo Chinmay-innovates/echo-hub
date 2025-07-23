@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { ArrowDown, Loader2, ServerCrash } from 'lucide-react';
 
-import { cn, format } from '@/lib/utils';
+import { format } from '@/lib/utils';
 import { useChatQuery } from '@/hooks/use-chat-query';
 import { Member, MessageWithMemberWithProfile } from '@/prisma/types';
 

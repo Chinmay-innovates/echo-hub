@@ -2,14 +2,7 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react';
-import {
-  AlertCircle,
-  CheckCircle,
-  File,
-  FileIcon,
-  Upload,
-  X,
-} from 'lucide-react';
+import { AlertCircle, CheckCircle, FileIcon, Upload, X } from 'lucide-react';
 
 import { UploadButton } from '@/lib/uploadthing';
 import { cn } from '@/lib/utils';
