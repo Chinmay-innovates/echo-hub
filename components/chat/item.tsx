@@ -196,7 +196,7 @@ export const ChatItem = ({
                 rel="noopener noreferrer"
                 className="text-sm font-medium text-indigo-500 hover:text-indigo-400 hover:underline"
               >
-                PDF {fileUrl.split('/').pop()}
+                {fileUrl.split('/').pop()}
               </a>
             </div>
           )}
