@@ -15,9 +15,11 @@ import { Button } from '@/components/ui/button';
 
 import { useModal } from '@/hooks/use-modal-store';
 import { AlertTriangle, Trash, Trash2, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export const DeleteServerModal = () => {
   const { isOpen, onClose, type, data } = useModal();
+  const router = useRouter();
 
   const isModalOpen = isOpen && type === 'deleteServer';
   const { server } = data;
@@ -26,7 +28,8 @@ export const DeleteServerModal = () => {
   const onClick = async () => {
     try {
       setIsloading(true);
-      axios.delete(`/api/servers/${server?.id}`);
+      await axios.delete(`/api/servers/${server?.id}`);
+      router.push(`/servers/${server?.id}`);
       onClose();
     } catch (error) {
       console.log(error);
