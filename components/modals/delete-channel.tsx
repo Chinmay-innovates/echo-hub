@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import queryString from 'query-string';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { AlertTriangle, Trash, Trash2, X } from 'lucide-react';
 
 import {
@@ -21,7 +21,6 @@ import { useModal } from '@/hooks/use-modal-store';
 export const DeleteChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
-  const params = useParams();
 
   const isModalOpen = isOpen && type === 'deleteChannel';
   const { server, channel } = data;
