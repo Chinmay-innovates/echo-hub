@@ -16,10 +16,11 @@ export const MediaRoom = ({ chatId, audio, video }: Props) => {
   const { user } = useUser();
   const [token, setToken] = useState('');
 
-  const name = `${user?.firstName} ${user?.lastName}`;
-
   useEffect(() => {
     if (!user?.firstName || !user?.lastName) return;
+
+    const name = `${user.firstName} ${user.lastName}`;
+
     (async () => {
       try {
         const response = await fetch(
@@ -41,6 +42,7 @@ export const MediaRoom = ({ chatId, audio, video }: Props) => {
       </div>
     );
   }
+
   return (
     <LiveKitRoom
       data-lk-theme="default"
