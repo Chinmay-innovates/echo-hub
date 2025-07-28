@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,19 +9,20 @@ import {
 } from '@/components/ui/dropdown-menu';
 import {
   ChevronDown,
-  Settings2,
-  Trash2,
   LogOut,
   PlusCircle,
+  Settings2,
+  Trash2,
   UserPlus,
   Users,
 } from 'lucide-react';
+import { useState } from 'react';
 
 import { MemberRole } from '@/app/generated/prisma';
-import { ServerWithMembersWithProfiles } from '@/prisma/types';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useModal } from '@/hooks/use-modal-store';
 import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-is-mobile';
+import { ServerWithMembersWithProfiles } from '@/prisma/types';
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;

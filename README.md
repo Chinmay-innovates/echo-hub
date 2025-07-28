@@ -61,7 +61,6 @@ production-ready, full-stack, real-time applications.
 ---
 
 ## 🛠️ Getting Started
-
 ### 1. Clone the repository
 
 ```bash

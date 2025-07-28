@@ -1,12 +1,12 @@
 import { UserButton } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
-import { db } from '@/lib/db';
 import { currentProfile } from '@/lib/current-profile';
+import { db } from '@/lib/db';
 
+import { ModeToggle } from '@/components/mode-toggle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { ModeToggle } from '@/components/mode-toggle';
 
 import { NavigationAction } from './action';
 import { NavigationItem } from './item';

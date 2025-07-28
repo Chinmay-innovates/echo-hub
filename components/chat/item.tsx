@@ -1,12 +1,13 @@
 'use client';
 
-import z from 'zod';
 import axios from 'axios';
 import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import z from 'zod';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   EditIcon,
   FileIcon,
@@ -15,13 +16,12 @@ import {
   Trash,
 } from 'lucide-react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { MemberRole } from '@/app/generated/prisma';
 import { Member, MemberWithProfile } from '@/prisma/types';
 
-import { FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
+import { FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
 import { ActionTooltip } from '@/components/action-tooltip';

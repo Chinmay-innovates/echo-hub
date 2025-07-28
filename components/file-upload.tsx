@@ -1,8 +1,8 @@
 'use client';
 
+import { AlertCircle, CheckCircle, FileIcon, Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { AlertCircle, CheckCircle, FileIcon, Upload, X } from 'lucide-react';
 
 import { UploadButton } from '@/lib/uploadthing';
 import { cn } from '@/lib/utils';
@@ -130,13 +130,13 @@ export const FileUpload = ({ endpoint, value, onChange }: FileUploadProps) => {
         }}
         className={cn(
           `
-        w-full 
-        border-2 
-        rounded-xl 
-        text-center 
-        relative 
-        overflow-hidden 
-        transition-all 
+        w-full
+        border-2
+        rounded-xl
+        text-center
+        relative
+        overflow-hidden
+        transition-all
         duration-300
         group
         px-6 py-8

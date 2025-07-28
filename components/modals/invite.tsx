@@ -1,16 +1,16 @@
 'use client';
 
 import axios from 'axios';
+import { Check, Copy, Link, RefreshCw, Sparkles, Users } from 'lucide-react';
 import { useState } from 'react';
-import { Check, Copy, Users, Link, Sparkles, RefreshCw } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
