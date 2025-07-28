@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { useQueryClient, InfiniteData } from '@tanstack/react-query';
 import { useSocket } from '@/components/providers/socket-provider';
 import { MessageWithMemberWithProfile } from '@/prisma/types';
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 type ChatSocketProps = {
   addKey: string;

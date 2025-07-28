@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
 import { Message } from '@/app/generated/prisma';
 import { currentProfile } from '@/lib/current-profile';
+import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
 

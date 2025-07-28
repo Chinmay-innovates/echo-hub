@@ -1,19 +1,5 @@
 'use client';
 
-import axios from 'axios';
-import qs from 'query-string';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import {
-  ShieldCheck,
-  ShieldAlert,
-  MoreVertical,
-  ShieldQuestion,
-  Shield,
-  Check,
-  Gavel,
-  Loader2,
-} from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -21,10 +7,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import axios from 'axios';
+import {
+  Check,
+  Gavel,
+  Loader2,
+  MoreVertical,
+  Shield,
+  ShieldAlert,
+  ShieldCheck,
+  ShieldQuestion,
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import qs from 'query-string';
+import { useState } from 'react';
 
-import { useModal } from '@/hooks/use-modal-store';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { UserAvatar } from '@/components/user-avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,9 +30,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
-  DropdownMenuTrigger,
   DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { UserAvatar } from '@/components/user-avatar';
+import { useModal } from '@/hooks/use-modal-store';
 
 import { MemberRole } from '@/app/generated/prisma';
 import { ServerWithMembersWithProfiles } from '@/prisma/types';

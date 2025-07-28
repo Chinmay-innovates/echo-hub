@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 
-import { db } from '@/lib/db';
-import { Profile } from '@/prisma/types';
-import { initialProfile } from '@/lib/initial-profile';
 import { InitialModal } from '@/components/modals/initial';
+import { db } from '@/lib/db';
+import { initialProfile } from '@/lib/initial-profile';
+import { Profile } from '@/prisma/types';
 
 export default async function Page() {
   const profile = await initialProfile();

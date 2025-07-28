@@ -1,18 +1,18 @@
 import { db } from '@/lib/db';
 
-import { redirect } from 'next/navigation';
 import { Hash, Mic, ShieldAlert, ShieldCheck, Video } from 'lucide-react';
+import { redirect } from 'next/navigation';
 
 import { ChannelType, MemberRole } from '@/app/generated/prisma';
 
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 
+import { ServerChannel } from '@/components/server/channel';
 import { ServerHeader } from '@/components/server/header';
+import { ServerMember } from '@/components/server/member';
 import { ServerSearch } from '@/components/server/search';
 import { ServerSection } from '@/components/server/section';
-import { ServerChannel } from '@/components/server/channel';
-import { ServerMember } from '@/components/server/member';
 
 import { currentProfile } from '@/lib/current-profile';
 

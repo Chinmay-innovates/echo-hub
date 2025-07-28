@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
 import { currentProfile } from '@/lib/current-profile';
+import { NextResponse } from 'next/server';
 
-import { DM } from '@/prisma/types';
 import { db } from '@/lib/db';
+import { DM } from '@/prisma/types';
 
 const MESSAGES_BATCH = 10;
 

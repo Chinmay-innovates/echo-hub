@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
-import { Channel, Server } from '@/prisma/types';
 import { ChannelType } from '@/app/generated/prisma';
+import { Channel, Server } from '@/prisma/types';
 import { QueryParams } from '@/types';
 
 export type ModalType =

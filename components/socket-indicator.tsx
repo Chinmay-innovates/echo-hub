@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle, AlertCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle } from 'lucide-react';
 
 import { useSocket } from '@/components/providers/socket-provider';
 import { Badge } from '@/components/ui/badge';

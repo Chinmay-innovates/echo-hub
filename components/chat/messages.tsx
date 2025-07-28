@@ -1,17 +1,17 @@
 'use client';
 
-import { Fragment, useEffect, useRef, useState } from 'react';
 import { ArrowDown, Loader2, ServerCrash } from 'lucide-react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 
-import { format } from '@/lib/utils';
 import { useChatQuery } from '@/hooks/use-chat-query';
+import { format } from '@/lib/utils';
 import { Member, MessageWithMemberWithProfile } from '@/prisma/types';
 
 import { ChatItem } from './item';
 import { ChatWelcome } from './welcome';
 
-import { useChatSocket } from '@/hooks/use-chat-socket';
 import { useChatScroll } from '@/hooks/use-chat-scroll';
+import { useChatSocket } from '@/hooks/use-chat-socket';
 
 const DATE_FORMAT = 'dd MMM yyyy, HH:mm';
 

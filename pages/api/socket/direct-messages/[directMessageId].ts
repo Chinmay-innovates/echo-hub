@@ -1,9 +1,9 @@
-import { NextApiRequest } from 'next';
 import { NextApiResponseServerIo } from '@/types';
+import { NextApiRequest } from 'next';
 
+import { MemberRole } from '@/app/generated/prisma';
 import { currentProfilePages } from '@/lib/current-profile-pages';
 import { db } from '@/lib/db';
-import { MemberRole } from '@/app/generated/prisma';
 
 export default async function handler(
   req: NextApiRequest,

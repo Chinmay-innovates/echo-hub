@@ -1,10 +1,11 @@
 'use client';
 
 import axios from 'axios';
-import { useState } from 'react';
-import queryString from 'query-string';
 import { AlertTriangle, Trash, Trash2, X } from 'lucide-react';
+import queryString from 'query-string';
+import { useState } from 'react';
 
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -13,7 +14,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 
 import { useModal } from '@/hooks/use-modal-store';
 

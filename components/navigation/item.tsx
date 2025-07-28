@@ -1,8 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { ActionTooltip } from '@/components/action-tooltip';
 import { cn } from '@/lib/utils';

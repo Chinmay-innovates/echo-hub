@@ -2,8 +2,8 @@
 
 import { Plus, Settings2 } from 'lucide-react';
 
-import { useModal } from '@/hooks/use-modal-store';
 import { ActionTooltip } from '@/components/action-tooltip';
+import { useModal } from '@/hooks/use-modal-store';
 
 import { ChannelType, MemberRole } from '@/app/generated/prisma';
 import { ServerWithMembersWithProfiles } from '@/prisma/types';
