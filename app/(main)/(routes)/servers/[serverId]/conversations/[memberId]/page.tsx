@@ -15,16 +15,18 @@ interface Props {
     serverId: string;
     memberId: string;
   }>;
-  searchParams: {
-    video?: boolean;
-  };
+  searchParams?: Promise<{
+    video?: string;
+  }>;
 }
 
 const ConversationPage = async ({ params, searchParams }: Props) => {
   const profile = await currentProfile();
   if (!profile) return RedirectToSignIn;
+  if (!searchParams) return;
 
   const { serverId, memberId } = await params;
+  const { video } = await searchParams;
 
   const currentMember = await db.member.findFirst({
     where: {
@@ -58,10 +60,10 @@ const ConversationPage = async ({ params, searchParams }: Props) => {
         serverId={serverId}
         type="conversation"
       />
-      {searchParams.video && (
+      {video && (
         <MediaRoom chatId={conversation.id} video={true} audio={true} />
       )}
-      {!searchParams.video && (
+      {!video && (
         <>
           <ChatMessages
             member={currentMember}
